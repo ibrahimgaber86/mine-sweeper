@@ -6,7 +6,7 @@ const STATUS = {
 };
 
 const SIZE = 10;
-const MINES = 15;
+let mines = 10;
 
 // function to create Board
 function createBoard(size, numberOfMines) {
@@ -63,7 +63,7 @@ function getMarked() {
       }
     })
   );
-  minesNum.innerHTML = MINES - count;
+  minesNum.innerHTML = mines - count;
 }
 
 // get surronded cells
@@ -104,33 +104,29 @@ function reveal(cell) {
   }
 }
 
+//
+function stopBoardElementEvent(e) {
+  e.stopImmediatePropagation();
+}
 // function to check win or loose
 function checkGame() {
   const win = checkWin();
   const loose = checkLoose();
 
   if (win || loose) {
-    boardElement.addEventListener(
-      "click",
-      (e) => e.stopImmediatePropagation(),
-      {
-        capture: true,
-      }
-    );
-    boardElement.addEventListener(
-      "contextmenu",
-      (e) => e.stopImmediatePropagation(),
-      {
-        capture: true,
-      }
-    );
+    boardElement.addEventListener("click", stopBoardElementEvent, {
+      capture: true,
+    });
+    boardElement.addEventListener("contextmenu", stopBoardElementEvent, {
+      capture: true,
+    });
   }
   if (win) {
-    gameResult.innerHTML = "Contratulation You Win 🎉";
+    gameResult.innerHTML = "Congratulation You Win 🎉🎉🎉🎉";
   }
   if (loose) {
     revealMines();
-    gameResult.innerHTML = "Sorry You Loose 😟";
+    gameResult.innerHTML = "Sorry You Loose 😟😟😟😟";
   }
 }
 
@@ -168,36 +164,66 @@ function revealMines() {
   );
 }
 
-// create board
-let { board, mineCells } = createBoard(SIZE, MINES);
-console.log(board);
-
 // get html elements
 const boardElement = document.querySelector(".board");
 const minesNum = document.querySelector("#minesCount");
 const gameResult = document.querySelector("#gameResult");
+const chooseLevel = document.querySelector("#choose-mine-num");
+const btnReset = document.querySelector(".btn-reset");
 
-minesNum.innerHTML = MINES;
+let chooseLevelEvent = new Event("change");
+btnReset.addEventListener("click", () =>
+  chooseLevel.dispatchEvent(chooseLevelEvent)
+);
 
+chooseLevel.addEventListener("change", ({ target: { value } }) => {
+  boardElement.removeEventListener("contextmenu", stopBoardElementEvent, {
+    capture: true,
+  });
+  boardElement.removeEventListener("click", stopBoardElementEvent, {
+    capture: true,
+  });
+
+  gameResult.innerHTML = "";
+
+  mines = parseInt(value);
+
+  const res = fillBoard();
+  board = res.board;
+  mineCells = res.mineCells;
+});
+
+//
+function reset() {
+  chooseLevel.dispatchEvent("change");
+}
 // set grid size of board programatically
 boardElement.style.setProperty("--size", SIZE);
 
 // insert board inside page
-board.forEach((row) =>
-  row.forEach((cell) => {
-    boardElement.append(cell.div);
-    cell.div.addEventListener("click", () => {
-      reveal(cell);
+function fillBoard() {
+  minesNum.innerHTML = mines;
+  // create board
+  let { board, mineCells } = createBoard(SIZE, mines);
+  boardElement.innerHTML = "";
+  board.forEach((row) =>
+    row.forEach((cell) => {
+      boardElement.append(cell.div);
+      cell.div.addEventListener("click", () => {
+        reveal(cell);
 
-      checkGame();
-    });
-    cell.div.addEventListener("contextmenu", (e) => {
-      e.preventDefault();
-      if (cell.status === STATUS.MARKED || cell.status === STATUS.HIDDEN) {
-        cell.status =
-          cell.status === STATUS.MARKED ? STATUS.HIDDEN : STATUS.MARKED;
-      }
-      getMarked();
-    });
-  })
-);
+        checkGame();
+      });
+      cell.div.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        if (cell.status === STATUS.MARKED || cell.status === STATUS.HIDDEN) {
+          cell.status =
+            cell.status === STATUS.MARKED ? STATUS.HIDDEN : STATUS.MARKED;
+        }
+        getMarked();
+      });
+    })
+  );
+  return { board, mineCells };
+}
+let { board, mineCells } = fillBoard();

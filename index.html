@@ -10,6 +10,26 @@
   </head>
   <body>
     <h1 class="game-title">Mine Sweeper</h1>
+    <div class="select-group">
+      <label for="choose-mine-num">Choose Number Of Mines</label>
+      <select
+        style="
+          font-size: 20px;
+          padding: 10px;
+          margin: 20px;
+          border-radius: 10px;
+        "
+        name="chooseMineNum"
+        id="choose-mine-num"
+      >
+        <option value="10">Easy-10</option>
+        <option value="20">Medium-20</option>
+        <option value="30">Hard-30</option>
+        <option value="40">Very-Hard-40</option>
+        <option value="50">Extremly-Hard-50</option>
+      </select>
+      <button class="btn-reset">Reset</button>
+    </div>
     <h3 class="mines-left">Mines Left: <span id="minesCount"></span></h3>
     <h3 id="gameResult"></h3>
     <div class="board"></div>
