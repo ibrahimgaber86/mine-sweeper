@@ -144,17 +144,9 @@ function checkWin() {
 
 // function to check loose
 function checkLoose() {
-  let loose = false;
-  board.forEach((row) =>
-    row.forEach((c) => {
-      if (c.status === STATUS.MINE) {
-        loose = true;
-        return loose;
-      }
-    })
+  return board.some((row) =>
+    row.some((cell) => cell.mine && cell.status === STATUS.MINE)
   );
-
-  return loose;
 }
 
 // reveal all mines
