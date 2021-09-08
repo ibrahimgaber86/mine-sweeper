@@ -1,0 +1,89 @@
+:root {
+  --size: 10;
+}
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+.game-title {
+  background-color: rgb(231, 228, 228);
+  color: dodgerblue;
+  border: 1px solid;
+  padding: 10px;
+  border-radius: 5px;
+}
+.mines-left {
+  color: #d10404;
+  background-color: rgb(231, 228, 228);
+  border: 1px solid;
+  padding: 10px;
+  border-radius: 5px;
+}
+.game-title,
+.mines-left,
+#gameResult {
+  margin: 20px;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  border: var(--ds) solid;
+  background-color: #d4d2d2;
+  padding: 20px;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.board {
+  border: 3px solid rgb(20, 16, 16);
+  display: grid;
+  grid-template-columns: repeat(var(--size), 60px);
+  grid-template-rows: repeat(var(--size), 60px);
+}
+
+@media screen and (max-width: 700px) {
+  .board {
+    grid-template-columns: repeat(var(--size), 40px);
+    grid-template-rows: repeat(var(--size), 40px);
+  }
+}
+@media screen and (max-width: 600px) {
+  .board {
+    grid-template-columns: repeat(var(--size), 40px);
+    grid-template-rows: repeat(var(--size), 40px);
+  }
+}
+@media screen and (max-width: 500px) {
+  .board {
+    grid-template-columns: repeat(var(--size), 30px);
+    grid-template-rows: repeat(var(--size), 30px);
+  }
+}
+.board > [data-status] {
+  border: 2px solid rgb(61, 61, 61);
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: red;
+  font-size: 25px;
+}
+
+.board > [data-status="hidden"] {
+  background-color: #4e4e4e;
+}
+.board > [data-status="mine"] {
+  background-color: #eb0d0d;
+}
+.board > [data-status="mine"]::after {
+  content: "💥";
+}
+.board > [data-status="marked"] {
+  background-color: #ed0d;
+}
+.board > [data-status="marked"]::after {
+  content: "🚩";
+}
