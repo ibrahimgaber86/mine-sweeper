@@ -122,10 +122,11 @@ function checkGame() {
     });
   }
   if (win) {
+    revealMines(STATUS.MARKED);
     gameResult.innerHTML = "Congratulation You Win 🎉🎉🎉🎉";
   }
   if (loose) {
-    revealMines();
+    revealMines(STATUS.MINE);
     gameResult.innerHTML = "Sorry You Loose 😟😟😟😟";
   }
 }
@@ -150,10 +151,8 @@ function checkLoose() {
 }
 
 // reveal all mines
-function revealMines() {
-  mineCells.forEach(
-    (cell) => (board[cell.row][cell.column].status = STATUS.MINE)
-  );
+function revealMines(status) {
+  mineCells.forEach((cell) => (board[cell.row][cell.column].status = status));
 }
 
 // get html elements
