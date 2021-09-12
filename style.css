@@ -60,6 +60,19 @@ body {
   grid-template-columns: repeat(var(--size), 60px);
   grid-template-rows: repeat(var(--size), 60px);
 }
+footer {
+  font-family: "Indie Flower", cursive;
+  margin: 1rem;
+  color: #d10404;
+  font-size: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.my-name {
+  color: rgb(10, 47, 85);
+  font-weight: bolder;
+}
 
 @media screen and (max-width: 700px) {
   .board {
